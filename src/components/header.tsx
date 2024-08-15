@@ -7,10 +7,10 @@ import UserUI, { UserUIImg, UserUiName } from "./user-ui";
 import { Button } from "./ui/button";
 import { Bell } from "lucide-react";
 import { useUserCtx } from "./context/user-provider";
+import Menu from "./menu";
 
 function Header() {
   const { user } = useUserCtx();
-  console.log(user);
   return (
     <FloatingContainer className="min-h-14 border-b-2 bg-background mb-4 flex justify-center items-center">
       <NavBar className="h-full w-full">
@@ -22,13 +22,15 @@ function Header() {
         >
           <Bell className="stroke-slate-600 dark:stroke-slate-200" />
         </Button>
+        <Menu />
         <UserUI
           email={user?.email || ""}
           name={user?.name || ""}
+          img={user?.image}
           className="flex gap-2"
         >
           <UserUIImg />
-          <UserUiName className="text-sm" />
+          <UserUiName className="text-xs" />
         </UserUI>
       </NavBar>
     </FloatingContainer>

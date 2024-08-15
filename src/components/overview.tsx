@@ -6,7 +6,7 @@ function Overview() {
   const { user } = useUserCtx();
 
   return (
-    <div>
+    <div className="h-svh">
       <h1 className="text-xl">Welcome, {user?.name}</h1>
     </div>
   );
