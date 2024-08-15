@@ -1,3 +1,5 @@
+import Overview from "@/components/overview";
+
 export default function Home() {
-  return <h1 className="text-xl ">Hello</h1>;
+  return <Overview />;
 }

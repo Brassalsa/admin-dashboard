@@ -1,0 +1,73 @@
+"use client";
+import { cn } from "@/lib/utils";
+import { PropsDefault, PropsWIthClassName, User } from "@/types";
+import Image from "next/image";
+import React, { createContext, useContext } from "react";
+
+type CtxProps = {
+  img?: User["image"];
+  name: User["name"];
+  email: User["email"];
+};
+
+const UserCtx = createContext<CtxProps | null>(null);
+const useUserCtx = () => {
+  const ctx = useContext(UserCtx);
+  if (!ctx) {
+    throw new Error("useUserCtx must be used inside UserUI");
+  }
+  return ctx;
+};
+
+export default function UserUI({
+  children,
+  className,
+  ...rest
+}: CtxProps & PropsDefault) {
+  return (
+    <UserCtx.Provider value={rest}>
+      <div className={cn("flex gap-2 items-center", className)}>
+        {children || <DefaultUserUi />}
+      </div>
+    </UserCtx.Provider>
+  );
+}
+
+const DefaultUserUi = () => (
+  <>
+    <UserUIImg />
+    <div className="flex flex-col">
+      <UserUiName />
+      <UserUIUserName />
+    </div>
+  </>
+);
+
+export function UserUIImg({ className }: PropsWIthClassName) {
+  const { img, name } = useUserCtx();
+  return (
+    <div
+      className={cn(
+        "relative size-8 border rounded-full overflow-hidden shadow-sm",
+        className
+      )}
+    >
+      <Image
+        src={img || "/svg/user.svg"}
+        alt={`${name}-img`}
+        fill
+        sizes="200px"
+      />
+    </div>
+  );
+}
+
+export function UserUiName({ className }: PropsWIthClassName) {
+  const { name } = useUserCtx();
+  return <div className={cn("", className)}>{name}</div>;
+}
+
+export function UserUIUserName({ className }: PropsWIthClassName) {
+  const { email } = useUserCtx();
+  return <div className={cn("", className)}>@{email.split("@")[0]}</div>;
+}
