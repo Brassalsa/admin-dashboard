@@ -14,15 +14,18 @@ type User = {
   role: string;
   status: string;
   teams: string[];
-  info?: UserInfo;
+  info: UserInfo;
 };
 
 type UserInfo = {
   dob: Date;
   gender: string;
   nationality: string;
-  phone: number;
+  phone: number | string;
   email: string;
   work_email: string;
-  job_desc: string;
+  job: {
+    title: string;
+    desc: string;
+  };
 };
