@@ -20,7 +20,7 @@ function PeopleList({ users }: Props) {
       </TableHeader>
       <TableBody>
         {users.map((user) => (
-          <PeopleItem user={user} />
+          <PeopleItem key={user.id} user={user} />
         ))}
       </TableBody>
     </Table>

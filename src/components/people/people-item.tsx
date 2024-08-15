@@ -39,7 +39,9 @@ function PeopleItem({ user }: Props) {
       <TableCell>{user.email}</TableCell>
       <TableCell>
         {user.teams.map((i) => (
-          <Tag className="mr-1">{i}</Tag>
+          <Tag key={i} className="mr-1">
+            {i}
+          </Tag>
         ))}
       </TableCell>
     </TableRow>
