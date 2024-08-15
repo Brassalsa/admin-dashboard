@@ -1,4 +1,5 @@
 "use client";
+import { Status } from "@/lib/constants/user";
 import { generateUser } from "@/lib/utils/user";
 import { User } from "@/types";
 import {
@@ -26,7 +27,7 @@ export const useUserCtx = () => {
 export default function UserProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
-    if (!user) setUser(generateUser());
+    if (!user) setUser({ ...generateUser(), status: Status.Active });
   }, []);
 
   return <UserCtx.Provider value={{ user, setUser }} children={children} />;
