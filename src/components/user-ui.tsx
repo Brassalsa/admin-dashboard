@@ -5,9 +5,10 @@ import Image from "next/image";
 import React, { createContext, useContext } from "react";
 
 type CtxProps = {
-  img?: User["image"];
+  image?: User["image"];
   name: User["name"];
   email: User["email"];
+  id: User["id"];
 };
 
 const UserCtx = createContext<CtxProps | null>(null);
@@ -44,7 +45,7 @@ const DefaultUserUi = () => (
 );
 
 export function UserUIImg({ className }: PropsWIthClassName) {
-  const { img, name } = useUserCtx();
+  const { image, name } = useUserCtx();
   return (
     <div
       className={cn(
@@ -53,7 +54,7 @@ export function UserUIImg({ className }: PropsWIthClassName) {
       )}
     >
       <Image
-        src={img || "/svg/user.svg"}
+        src={image || "/svg/user.svg"}
         alt={`${name}-img`}
         fill
         sizes="200px"
@@ -68,6 +69,6 @@ export function UserUiName({ className }: PropsWIthClassName) {
 }
 
 export function UserUIUserName({ className }: PropsWIthClassName) {
-  const { email } = useUserCtx();
-  return <div className={cn("", className)}>@{email.split("@")[0]}</div>;
+  const { id } = useUserCtx();
+  return <div className={cn("", className)}>{id}</div>;
 }

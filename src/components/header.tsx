@@ -23,15 +23,12 @@ function Header() {
           <Bell className="stroke-slate-600 dark:stroke-slate-200" />
         </Button>
         <Menu />
-        <UserUI
-          email={user?.email || ""}
-          name={user?.name || ""}
-          img={user?.image}
-          className="flex gap-2"
-        >
-          <UserUIImg />
-          <UserUiName className="text-xs" />
-        </UserUI>
+        {user && (
+          <UserUI {...user} className="flex gap-2">
+            <UserUIImg />
+            <UserUiName className="text-xs" />
+          </UserUI>
+        )}
       </NavBar>
     </FloatingContainer>
   );

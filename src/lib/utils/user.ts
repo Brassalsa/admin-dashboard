@@ -8,7 +8,7 @@ export const generateUser = (): User => {
   const teams = pickRandomValues(Teams);
   const email = faker.word.adjective() + "@" + faker.word.adverb();
   return {
-    id: faker.number.hex({ min: 0, max: 10000 }),
+    id: "@" + email.split("@")[0],
     email,
     name: faker.person.fullName(),
     role,
