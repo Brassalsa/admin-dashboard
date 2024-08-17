@@ -1,44 +1,51 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import Tag from "../ui/tag";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FilterIcon } from "lucide-react";
 import AddMember from "./add-menber";
-import PeopleList from "./people-list";
-import { generateUser } from "@/lib/utils/user";
 import { User } from "@/types";
+import PeopleSheet from "./people-sheet";
+import DataTable from "./data-table";
+import { columns } from "./columns";
+import Search from "./search";
+import usePeopleState from "@/state/people";
+import { useEffect } from "react";
+import DataTableFilter from "./data-table-filter";
 
 type Props = {
-  users?: User[];
+  users: User[];
 };
-function People({ users: initialUsers = [] }: Props) {
-  const [users, setUsers] = useState(initialUsers);
+function People({ users: initialUser }: Props) {
+  const { peopleList, setPeopleList } = usePeopleState((s) => ({
+    peopleList: s.peopleList,
+    setPeopleList: s.setPeopleList,
+  }));
   useEffect(() => {
-    if (initialUsers.length === 0) setUsers([generateUser(), generateUser()]);
+    setPeopleList(initialUser);
   }, []);
   return (
-    <Card>
-      <CardContent>
-        <CardHeader>
-          <div className="flex flex-wrap items-center ">
-            <div className="flex-1 flex gap-2">
-              <h3 className="text-lg font-semibold">Team members</h3>{" "}
-              <Tag varient="violet">100 users</Tag>
+    <>
+      <PeopleSheet />
+      <Card>
+        <CardContent>
+          <CardHeader>
+            <div className="flex flex-wrap items-center ">
+              <div className="flex-1 flex gap-2">
+                <h3 className="text-lg font-semibold">Team members</h3>{" "}
+                <Tag varient="violet">{peopleList?.length}</Tag>
+              </div>
+              <div className="flex gap-2 items-center ">
+                <Search />
+                <DataTableFilter />
+                <AddMember />
+              </div>
             </div>
-            <div className="flex gap-2 items-center ">
-              <Input placeholder="Search..." className="max-w-60" />
-              <Button variant="ghost" size="icon" className="scale-90">
-                <FilterIcon className="stroke-slate-500" />
-              </Button>
-              <AddMember />
-            </div>
-          </div>
-        </CardHeader>
-        <PeopleList users={users} />
-      </CardContent>
-    </Card>
+          </CardHeader>
+          <DataTable columns={columns} data={peopleList} />
+        </CardContent>
+      </Card>
+    </>
   );
 }
 

@@ -29,3 +29,8 @@ type UserInfo = {
     desc: string;
   };
 };
+
+type Filter = {
+  roles: string[];
+  teams: string[];
+};
