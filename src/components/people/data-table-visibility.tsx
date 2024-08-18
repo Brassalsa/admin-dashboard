@@ -15,7 +15,7 @@ function DataTableVisibility() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="ml-auto" size={"icon"}>
-          <Eye />
+          <Eye className="size-6 stroke-slate-500 dark:stroke-slate-300" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

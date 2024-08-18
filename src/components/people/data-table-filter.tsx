@@ -89,8 +89,8 @@ function DataTableFilter() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="scale-90">
-          <FilterIcon className="stroke-slate-500" />
+        <Button variant="outline" size="icon" className="scale-90">
+          <FilterIcon className="stroke-slate-500 dark:stroke-slate-300 size-5" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

@@ -20,7 +20,7 @@ function Header() {
           variant={"ghost"}
           className="size-7 rounded-full overflow-hidden p-1"
         >
-          <Bell className="stroke-slate-600 dark:stroke-slate-200" />
+          <Bell className="stroke-slate-600 dark:stroke-slate-200 size-4" />
         </Button>
         <Menu />
         {user && (
