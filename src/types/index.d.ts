@@ -6,7 +6,11 @@ type PropsWIthClassName = {
 
 type PropsDefault = PropsWithChildren & PropsWIthClassName;
 
-type User = {
+type User = UserWithoutInfo & {
+  info?: UserInfo;
+};
+
+type UserWithoutInfo = {
   id: string;
   image?: string;
   name: string;
@@ -14,7 +18,6 @@ type User = {
   role: string;
   status: string;
   teams: string[];
-  info: UserInfo;
 };
 
 type UserInfo = {

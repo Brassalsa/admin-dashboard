@@ -44,16 +44,20 @@ const usePeopleState = create<State>((set, get) => ({
     set({
       peopleList: get().peopleList.filter((i) => i.id !== id),
     }),
-  addPeopleToList: (update) =>
-    set({
-      peopleList: get().peopleList.map((people) => {
-        if (people.id === update.id) {
-          return update;
-        }
-        return people;
-      }),
-    }),
-
+  addPeopleToList: (update) => {
+    let edit = false;
+    const newPeopleList = get().peopleList.map((people) => {
+      if (people.id === update.id) {
+        edit = true;
+        return update;
+      }
+      return people;
+    });
+    if (!edit) {
+      newPeopleList.unshift(update);
+    }
+    set({ peopleList: newPeopleList });
+  },
   people: null,
   setPeople: (people) => set({ people }),
 
