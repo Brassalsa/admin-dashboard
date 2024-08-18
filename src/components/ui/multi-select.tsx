@@ -1,5 +1,6 @@
 import React, {
   ChangeEvent,
+  Dispatch,
   forwardRef,
   Ref,
   useEffect,
@@ -14,18 +15,24 @@ type Props = {
   items: string[];
   title?: string;
   defaultVal?: string[];
+  onValueChange?: (val: string[]) => void;
+  itemText?: (val: string) => string;
 };
 
 export type MultiSelectRef = {
   selectedItems: string[];
+  setSelectedItems: Dispatch<string[]>;
 };
 
 function MultiSelect(
-  { items, title, defaultVal = [] }: Props,
+  { items, title, defaultVal = [], onValueChange, itemText }: Props,
   ref?: Ref<MultiSelectRef | undefined | null>
 ) {
   const [selectedItems, setSelectedItems] = useState<string[]>(defaultVal);
-  useImperativeHandle(ref, () => ({ selectedItems }));
+  useImperativeHandle(ref, () => ({ selectedItems, setSelectedItems }));
+  useEffect(() => {
+    onValueChange?.(selectedItems);
+  }, [selectedItems]);
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
     const newSelectedRoles = checked
@@ -43,8 +50,9 @@ function MultiSelect(
           <Button
             size={"icon"}
             variant={"outline"}
+            type="button"
             onClick={() => setSelectedItems(items)}
-            className=" scale-[0.6] "
+            className="scale-[0.6]"
           >
             <CheckCheck
               className={cn({
@@ -56,6 +64,7 @@ function MultiSelect(
           <Button
             size={"icon"}
             variant={"outline"}
+            type="button"
             onClick={() => setSelectedItems([])}
             className=" scale-[0.6]"
           >
@@ -64,18 +73,18 @@ function MultiSelect(
           </Button>
         </div>
       </div>
-      <div className="flex gap-6 flex-wrap">
-        {items.map((role) => (
-          <div key={role}>
-            <label className="flex gap-1 items-center cursor-pointer ">
+      <div className="grid sm:grid-cols-2 gap-y-2">
+        {items.map((key) => (
+          <div key={key} className="shrink-0">
+            <label className="flex gap-1 items-center cursor-pointer">
               <input
                 type="checkbox"
                 className="accent-blue-500"
-                value={role}
-                checked={selectedItems.includes(role)}
+                value={key}
+                checked={selectedItems.includes(key)}
                 onChange={handleCheckboxChange}
               />
-              {role}
+              {itemText ? itemText(key) : key}
             </label>
           </div>
         ))}
