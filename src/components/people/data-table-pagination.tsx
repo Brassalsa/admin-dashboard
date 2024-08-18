@@ -14,12 +14,12 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import usePeopleState from "@/state/people";
-import userUrlQuery from "@/hooks/url-query";
+import useUrlQuery from "@/hooks/url-query";
 import { useEffect } from "react";
 
 export function DataTablePagination() {
   const table = usePeopleState((s) => s.table);
-  const query = userUrlQuery(true);
+  const query = useUrlQuery(true);
   useEffect(() => {
     // run on first
     if (!table) return;

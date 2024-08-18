@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import useDebounce from "./debounce";
 
-const userUrlQuery = (withDebounce = false, delay = 200) => {
+const useUrlQuery = (withDebounce = false, delay = 200) => {
   const params = useSearchParams();
   const debounce = useDebounce(delay);
 
@@ -70,4 +70,4 @@ const userUrlQuery = (withDebounce = false, delay = 200) => {
   };
 };
 
-export default userUrlQuery;
+export default useUrlQuery;

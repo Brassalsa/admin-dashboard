@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { Input } from "../ui/input";
-import userUrlQuery from "@/hooks/url-query";
+import useUrlQuery from "@/hooks/url-query";
 import useDebounce from "@/hooks/debounce";
 import usePeopleState from "@/state/people";
 
@@ -10,7 +10,7 @@ function Search() {
     input: s.searchVal,
     setInput: s.setSearchVal,
   }));
-  const { query, setQueryParam } = userUrlQuery();
+  const { query, setQueryParam } = useUrlQuery();
   const debounce = useDebounce();
 
   // run on first render

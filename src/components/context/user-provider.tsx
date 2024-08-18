@@ -30,5 +30,7 @@ export default function UserProvider({ children }: PropsWithChildren) {
     if (!user) setUser({ ...generateUser(), status: Status.Active });
   }, []);
 
-  return <UserCtx.Provider value={{ user, setUser }} children={children} />;
+  return (
+    <UserCtx.Provider value={{ user, setUser }}>{children}</UserCtx.Provider>
+  );
 }
