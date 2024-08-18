@@ -30,11 +30,11 @@ function People({ users: initialUser }: Props) {
         <CardContent>
           <CardHeader>
             <div className="flex flex-wrap items-center">
-              <div className="flex-1 flex gap-2 shrink-0 min-w-fit">
+              <div className="flex-1 flex gap-2 shrink-0 min-w-fit justify-center md:justify-start">
                 <h3 className="text-lg font-semibold">Team members</h3>{" "}
                 <Tag varient="violet">{peopleList?.length}</Tag>
               </div>
-              <div className="ml-auto flex gap-2 items-center ">
+              <div className="ml-auto flex flex-wrap gap-2 items-center justify-center ">
                 <Search />
                 <DataTableFilter />
                 <AddMember />
