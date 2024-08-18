@@ -33,7 +33,7 @@ function Header() {
         >
           <Bell className="stroke-slate-600 dark:stroke-slate-200 size-4" />
         </Button>
-        <div className="sm:flex gap-2 hidden ">
+        <div className="sm:flex gap-2 hidden lg:hidden">
           <Menu />
         </div>
         {user && (
