@@ -1,7 +1,7 @@
 import { User } from "@/types";
 import { Column, ColumnDef, Row } from "@tanstack/react-table";
-import Tag from "../ui/tag";
-import { Roles } from "@/lib/constants/user";
+import Tag, { getVarientsFromArr } from "../ui/tag";
+import { Roles, Teams } from "@/lib/constants/user";
 import ActionsComp from "./column-comp/action-comp";
 import { NameCell, NameHeader } from "./column-comp/name-comp";
 import { StatusHeader, StatusRow } from "./column-comp/status-comp";
@@ -40,9 +40,11 @@ export const columns: ColumnDef<People>[] = [
     filterFn: "arrIncludesSome",
     header: "Teams",
     cell: ({ row }) => {
+      const varients = getVarientsFromArr();
+
       return row.original.teams.map((i) => (
-        <Tag key={i} className="mr-1">
-          {i}
+        <Tag key={i} className="mr-1" varient={varients()}>
+          {Teams[i as keyof typeof Teams]}
         </Tag>
       ));
     },
