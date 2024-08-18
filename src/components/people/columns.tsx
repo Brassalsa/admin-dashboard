@@ -11,7 +11,7 @@ import {
   Dot,
   MoreHorizontal,
 } from "lucide-react";
-import { Status } from "@/lib/constants/user";
+import { Roles, Status } from "@/lib/constants/user";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -24,6 +24,7 @@ import { Button } from "../ui/button";
 import usePeopleState from "@/state/people";
 import DeleteRow from "./actions/delete-row-dialog";
 import { useState } from "react";
+import EditRow from "./actions/edit-row-dialog";
 
 type People = User;
 
@@ -48,22 +49,15 @@ export const columns: ColumnDef<People>[] = [
     },
     cell: ({ row }) => {
       const user = row.original;
-      const handleClick = () => {
-        usePeopleState.setState({
-          people: user,
-          overView: true,
-        });
-      };
+
       return (
-        <span onClick={handleClick}>
-          <UserUI {...user}>
-            <UserUIImg className="shrink-0" />
-            <div className="flex flex-col gap-0">
-              <UserUiName className="text-sm" />
-              <UserUIUserName className="text-muted-foreground text-xs" />
-            </div>
-          </UserUI>
-        </span>
+        <UserUI {...user}>
+          <UserUIImg className="shrink-0" />
+          <div className="flex flex-col gap-0">
+            <UserUiName className="text-sm" />
+            <UserUIUserName className="text-muted-foreground text-xs" />
+          </div>
+        </UserUI>
       );
     },
   },
@@ -87,7 +81,7 @@ export const columns: ColumnDef<People>[] = [
       );
     },
     cell: ({ row }) => {
-      const status = row.original.status;
+      const status = Status[row.original.status as keyof typeof Status];
       const isActive = status === Status.Active;
       return (
         <Tag className="flex gap-0 items-center p-0">
@@ -106,6 +100,7 @@ export const columns: ColumnDef<People>[] = [
     accessorKey: "role",
     filterFn: "arrIncludesSome",
     header: "Role",
+    cell: ({ row }) => <>{Roles[row.original.role as keyof typeof Roles]}</>,
   },
   {
     accessorKey: "email",
@@ -126,9 +121,10 @@ export const columns: ColumnDef<People>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const [editDialog, setEditDialog] = useState(false);
       const [delDialog, setDelDialog] = useState(false);
       return (
-        <>
+        <span className="relative" onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
@@ -144,11 +140,16 @@ export const columns: ColumnDef<People>[] = [
                     people: row.original,
                     edit: true,
                   });
+                  setEditDialog(true);
                 }}
               >
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setDelDialog(true)}>
+              <DropdownMenuItem
+                onClick={() => {
+                  setDelDialog(true);
+                }}
+              >
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -160,7 +161,18 @@ export const columns: ColumnDef<People>[] = [
               usePeopleState.getState().deletePeopleFromList(row.original.id);
             }}
           />
-        </>
+          <EditRow
+            open={editDialog}
+            setOpen={setEditDialog}
+            onSubmit={(val) => {
+              usePeopleState.getState().addPeopleToList({
+                ...val,
+                id: "@" + val.email.split("@")[0],
+              });
+            }}
+            user={row.original}
+          />
+        </span>
       );
     },
   },

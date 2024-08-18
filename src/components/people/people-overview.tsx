@@ -3,6 +3,7 @@ import React from "react";
 import UserUI, { UserUIImg, UserUiName, UserUIUserName } from "../user-ui";
 import { Separator } from "../ui/separator";
 import { Card, CardContent, CardDescription, CardHeader } from "../ui/card";
+import { Roles } from "@/lib/constants/user";
 
 type Props = {
   people: User;
@@ -25,7 +26,7 @@ function PeopleOverView({ people }: Props) {
               orientation="vertical"
             />
             <div>
-              {people?.role}
+              {Roles[people.role as keyof typeof Roles]}
               <div>Role</div>
             </div>
           </div>
@@ -35,19 +36,28 @@ function PeopleOverView({ people }: Props) {
         <CardContent>
           <CardHeader>Personal Information</CardHeader>
           <CardDescription className="flex flex-col">
-            <CardItem title="Date of Birth" desc={info.dob.toDateString()} />
-            <CardItem title="Gender" desc={info.gender} />
-            <CardItem title="Nationality" desc={info.nationality} />
-            <CardItem title="Contact No." desc={info.phone.toString()} />
-            <CardItem title="Email" desc={info.email} />
-            <CardItem title="Work Email" desc={info.work_email} />
+            {info ? (
+              <>
+                <CardItem
+                  title="Date of Birth"
+                  desc={info.dob.toDateString()}
+                />
+                <CardItem title="Gender" desc={info.gender} />
+                <CardItem title="Nationality" desc={info.nationality} />
+                <CardItem title="Contact No." desc={info.phone.toString()} />
+                <CardItem title="Email" desc={info.email} />
+                <CardItem title="Work Email" desc={info.work_email} />
+              </>
+            ) : (
+              "N/A"
+            )}
           </CardDescription>
         </CardContent>
       </Card>
 
       <Card>
         <CardContent>
-          <CardHeader>{info.job.title}</CardHeader>
+          <CardHeader>{info?.job.title || "N/A"}</CardHeader>
           <CardDescription>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda
             facilis ad deleniti praesentium, laudantium dolorem doloribus

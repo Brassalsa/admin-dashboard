@@ -8,6 +8,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  Row,
   SortingState,
   useReactTable,
   VisibilityState,
@@ -25,16 +26,17 @@ import { DataTablePagination } from "./data-table-pagination";
 import { useEffect, useState } from "react";
 import usePeopleState from "@/state/people";
 import DataTableVisibility from "./data-table-visibility";
-import { AnimatePresence } from "framer-motion";
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onRowClick: (rawData: TData) => void;
 }
 
 const DataTable = <TData, TValue>({
   columns,
   data,
+  onRowClick,
 }: DataTableProps<TData, TValue>) => {
   // sorting state
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -102,37 +104,36 @@ const DataTable = <TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            <AnimatePresence presenceAffectsLayout>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="hover:cursor-pointer"
-                  >
-                    {row.getVisibleCells().map((cell) => {
-                      return (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="hover:cursor-pointer"
+                  onClick={() => onRowClick(row.original)}
+                >
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
-              )}
-            </AnimatePresence>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>

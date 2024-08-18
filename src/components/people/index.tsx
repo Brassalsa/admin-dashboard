@@ -1,8 +1,7 @@
 "use client";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import Tag from "../ui/tag";
-import { Button } from "../ui/button";
-import { FilterIcon } from "lucide-react";
+
 import AddMember from "./add-menber";
 import { User } from "@/types";
 import PeopleSheet from "./people-sheet";
@@ -30,19 +29,28 @@ function People({ users: initialUser }: Props) {
       <Card>
         <CardContent>
           <CardHeader>
-            <div className="flex flex-wrap items-center ">
-              <div className="flex-1 flex gap-2">
+            <div className="flex flex-wrap items-center">
+              <div className="flex-1 flex gap-2 shrink-0 min-w-fit">
                 <h3 className="text-lg font-semibold">Team members</h3>{" "}
                 <Tag varient="violet">{peopleList?.length}</Tag>
               </div>
-              <div className="flex gap-2 items-center ">
+              <div className="ml-auto flex gap-2 items-center ">
                 <Search />
                 <DataTableFilter />
                 <AddMember />
               </div>
             </div>
           </CardHeader>
-          <DataTable columns={columns} data={peopleList} />
+          <DataTable
+            columns={columns}
+            data={peopleList}
+            onRowClick={(data) => {
+              usePeopleState.setState({
+                overView: true,
+                people: data,
+              });
+            }}
+          />
         </CardContent>
       </Card>
     </>

@@ -1,5 +1,5 @@
 import { FilterIcon } from "lucide-react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -59,9 +59,10 @@ function DataTableFilter() {
   };
 
   useEffect(() => {
+    // run on initial render to set filters
     const roles = query.getQueryParam("roles").split(",");
     const teams = query.getQueryParam("teams").split(",");
-    setFilter({
+    setFilters({
       roles,
       teams,
     });
@@ -74,8 +75,8 @@ function DataTableFilter() {
     const teams = (teamsRef.current?.selectedItems || []).filter(
       (i) => Teams[i as keyof typeof Teams]
     );
+    console.log(teams);
 
-    alert("bruh");
     trigger();
     setFilters({ roles, teams }, true);
   };
@@ -106,6 +107,7 @@ function DataTableFilter() {
                 items={Object.keys(Roles)}
                 defaultVal={filter.roles}
                 ref={rolesRef}
+                itemText={(key) => Roles[key as keyof typeof Roles]}
               />
             </AccordionContent>
           </AccordionItem>
@@ -115,8 +117,9 @@ function DataTableFilter() {
               <MultiSelect
                 title="Filter by teams"
                 items={Object.keys(Teams)}
-                defaultVal={filter.roles}
+                defaultVal={filter.teams}
                 ref={teamsRef}
+                itemText={(key) => Teams[key as keyof typeof Teams]}
               />
             </AccordionContent>
           </AccordionItem>
