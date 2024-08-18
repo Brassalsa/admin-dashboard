@@ -41,7 +41,10 @@ const DataTable = <TData, TValue>({
   // sorting state
   const [sorting, setSorting] = useState<SortingState>([]);
   // search state
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [globalFilter, setGlobalFilter] = usePeopleState((s) => [
+    s.searchVal,
+    s.setSearchVal,
+  ]);
   // visibility state
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   // filter state
@@ -67,15 +70,13 @@ const DataTable = <TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
   });
 
-  // run
+  // run on first render
   useEffect(() => {
     usePeopleState.setState({
       table,
       initialTableState: table.getState(),
-      searchVal: globalFilter,
-      setSearchVal: setGlobalFilter,
     });
-  }, [table, globalFilter, setGlobalFilter]);
+  }, [table]);
 
   return (
     <>

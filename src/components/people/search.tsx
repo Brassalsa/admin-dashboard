@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Input } from "../ui/input";
 import userUrlQuery from "@/hooks/url-query";
 import useDebounce from "@/hooks/debounce";
@@ -22,7 +22,7 @@ function Search() {
   useEffect(() => {
     debounce(() => {
       setQueryParam("search", input);
-    });
+    }, 1000);
   }, [input]);
 
   return (

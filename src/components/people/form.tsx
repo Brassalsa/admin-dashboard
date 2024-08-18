@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Ref, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import UserUI, { UserUIImg } from "../user-ui";
+import UserUI, { UserUIImg, UserUiName } from "../user-ui";
 import {
   Form,
   FormControl,
@@ -76,6 +76,7 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
                   className="mx-auto"
                 >
                   <UserUIImg className="size-16" />
+                  <UserUiName />
                 </UserUI>
                 <div className="flex gap-4 mx-auto">
                   <FormControl>
