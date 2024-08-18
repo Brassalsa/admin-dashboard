@@ -60,7 +60,7 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
     <div>
       <Form {...form}>
         <form
-          className="flex flex-col sm:grid gap-3"
+          className="flex flex-col sm:grid gap-3 h-min"
           onSubmit={form.handleSubmit(onSubmitHandler)}
         >
           <FormField
@@ -76,7 +76,6 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
                   className="mx-auto"
                 >
                   <UserUIImg className="size-16" />
-                  <UserUiName />
                 </UserUI>
                 <div className="flex gap-4 mx-auto">
                   <FormControl>

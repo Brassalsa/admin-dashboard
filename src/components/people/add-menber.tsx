@@ -34,23 +34,25 @@ export default function AddMember() {
           <span>Add Members</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="">
-        <DialogHeader>Add Teams</DialogHeader>
-        <PeopleForm
-          defaultValues={{
-            email: "",
-            id: "",
-            name: "",
-            role: "",
-            status: "",
-            teams: [],
-          }}
-          onSubmit={(data) => {
-            onSubmit(data);
-            trigger();
-          }}
-          onCancel={trigger}
-        />
+      <DialogContent className="overflow-y-auto">
+        <div className="max-h-svh h-min overflow-y-auto px-1">
+          <DialogHeader>Add Teams</DialogHeader>
+          <PeopleForm
+            defaultValues={{
+              email: "",
+              id: "",
+              name: "",
+              role: "",
+              status: "",
+              teams: [],
+            }}
+            onSubmit={(data) => {
+              onSubmit(data);
+              trigger();
+            }}
+            onCancel={trigger}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );

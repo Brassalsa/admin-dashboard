@@ -15,8 +15,8 @@ export default function PeopleSheet() {
     setOverView: s.setOverView,
   }));
   return (
-    <Sheet open={overView} onOpenChange={setOverView}>
-      <SheetContent>
+    <Sheet open={overView} onOpenChange={setOverView} modal>
+      <SheetContent className="overflow-y-scroll">
         <SheetTitle className="hidden">People Overview</SheetTitle>
         <SheetDescription asChild className="text-primary">
           {people && <PeopleOverView people={people} />}
