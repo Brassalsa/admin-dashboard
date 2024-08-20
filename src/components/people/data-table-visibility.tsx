@@ -7,10 +7,10 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { Eye } from "lucide-react";
-import usePeopleState from "@/state/people";
+import useTableState from "@/state/table";
 
 function DataTableVisibility() {
-  const table = usePeopleState((s) => s.table);
+  const table = useTableState((s) => s.table);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

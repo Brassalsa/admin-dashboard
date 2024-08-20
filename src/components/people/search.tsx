@@ -2,35 +2,29 @@
 import React, { useEffect } from "react";
 import { Input } from "../ui/input";
 import useUrlQuery from "@/hooks/url-query";
-import useDebounce from "@/hooks/debounce";
-import usePeopleState from "@/state/people";
+import useTableState from "@/state/table";
 
 function Search() {
-  const { input, setInput } = usePeopleState((s) => ({
+  const { input, setInput } = useTableState((s) => ({
     input: s.searchVal,
     setInput: s.setSearchVal,
   }));
-  const { query, setQueryParam } = useUrlQuery();
-  const debounce = useDebounce();
+  const { query, setQueryParam } = useUrlQuery(true, 500);
 
   // run on first render
   useEffect(() => {
     setInput(query.get("search") || "");
   }, []);
 
-  // run on change and debounce
-  useEffect(() => {
-    debounce(() => {
-      setQueryParam("search", input);
-    }, 1000);
-  }, [input]);
-
   return (
     <div className="flex items-center py-4">
       <Input
         placeholder="Search..."
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={(e) => {
+          setInput(e.target.value);
+          setQueryParam("search", e.target.value);
+        }}
         className="max-w-sm"
       />
     </div>

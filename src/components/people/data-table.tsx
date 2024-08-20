@@ -8,7 +8,6 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  Row,
   SortingState,
   useReactTable,
   VisibilityState,
@@ -24,8 +23,8 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
 import { useEffect, useState } from "react";
-import usePeopleState from "@/state/people";
 import DataTableVisibility from "./data-table-visibility";
+import useTableState from "@/state/table";
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,7 +40,7 @@ const DataTable = <TData, TValue>({
   // sorting state
   const [sorting, setSorting] = useState<SortingState>([]);
   // search state
-  const [globalFilter, setGlobalFilter] = usePeopleState((s) => [
+  const [globalFilter, setGlobalFilter] = useTableState((s) => [
     s.searchVal,
     s.setSearchVal,
   ]);
@@ -72,7 +71,7 @@ const DataTable = <TData, TValue>({
 
   // run on first render
   useEffect(() => {
-    usePeopleState.setState({
+    useTableState.setState({
       table,
       initialTableState: table.getState(),
     });

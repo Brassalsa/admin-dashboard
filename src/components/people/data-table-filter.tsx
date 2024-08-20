@@ -19,7 +19,7 @@ import { Roles, Teams } from "@/lib/constants/user";
 
 import MultiSelect, { MultiSelectRef } from "../ui/multi-select";
 import useUrlQuery from "@/hooks/url-query";
-import usePeopleState from "@/state/people";
+import useTableState from "@/state/table";
 
 function DataTableFilter() {
   const [open, setOpen] = useState(false);
@@ -27,7 +27,7 @@ function DataTableFilter() {
   const teamsRef = useRef<MultiSelectRef>();
   const trigger = () => setOpen((prev) => !prev);
   const query = useUrlQuery(true);
-  const { table, filter, setFilter } = usePeopleState((s) => ({
+  const { table, filter, setFilter } = useTableState((s) => ({
     table: s.table,
     filter: s.filter,
     setFilter: s.setFilter,
@@ -75,7 +75,6 @@ function DataTableFilter() {
     const teams = (teamsRef.current?.selectedItems || []).filter(
       (i) => Teams[i as keyof typeof Teams]
     );
-    console.log(teams);
 
     trigger();
     setFilters({ roles, teams }, true);
@@ -83,7 +82,7 @@ function DataTableFilter() {
 
   const handleClear = () => {
     trigger();
-    setFilters(usePeopleState.getInitialState().filter, true);
+    setFilters(useTableState.getInitialState().filter, true);
   };
 
   return (

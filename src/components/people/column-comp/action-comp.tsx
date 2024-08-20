@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import usePeopleState from "@/state/people";
+import { usePeopleListState, usePeopleState } from "@/state/people";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import DeleteRow from "../actions/delete-row-dialog";
@@ -34,7 +34,6 @@ const ActionsComp = ({ row }: { row: Row<User> }) => {
             onClick={() => {
               usePeopleState.setState({
                 people: row.original,
-                edit: true,
               });
               setEditDialog(true);
             }}
@@ -54,14 +53,14 @@ const ActionsComp = ({ row }: { row: Row<User> }) => {
         open={delDialog}
         setOpen={setDelDialog}
         onSubmit={() => {
-          usePeopleState.getState().deletePeopleFromList(row.original.id);
+          usePeopleListState.getState().deletePeopleFromList(row.original.id);
         }}
       />
       <EditRow
         open={editDialog}
         setOpen={setEditDialog}
         onSubmit={(val) => {
-          usePeopleState.getState().addPeopleToList({
+          usePeopleListState.getState().addPeopleToList({
             ...val,
             id: "@" + val.email.split("@")[0],
           });

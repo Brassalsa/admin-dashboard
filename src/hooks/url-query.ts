@@ -16,12 +16,16 @@ const useUrlQuery = (withDebounce = false, delay = 200) => {
     (key: string) => decodeURIComponent(params.get(key) || ""),
     []
   );
-  const setQueryParam = useCallback(<T>(key: string, value: T) => {
-    const newQuery = new URLSearchParams(params);
-    newQuery.delete(key);
-    newQuery.append(key, encodeURIComponent(String(value)));
-    pusher(newQuery);
-  }, []);
+  const setQueryParam = useCallback(
+    <T>(key: string, value: T) => {
+      const newQuery = new URLSearchParams(params);
+      console.log(params);
+      newQuery.delete(key);
+      newQuery.append(key, encodeURIComponent(String(value)));
+      pusher(newQuery);
+    },
+    [params]
+  );
 
   const setQueryParams = useCallback(
     <T>(paramsList: { key: string; value: T }[]) => {

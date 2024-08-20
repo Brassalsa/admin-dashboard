@@ -8,7 +8,7 @@ import PeopleSheet from "./people-sheet";
 import DataTable from "./data-table";
 import { columns } from "./columns";
 import Search from "./search";
-import usePeopleState from "@/state/people";
+import { useOverViewState, usePeopleListState } from "@/state/people";
 import { useEffect } from "react";
 import DataTableFilter from "./data-table-filter";
 
@@ -16,7 +16,7 @@ type Props = {
   users: User[];
 };
 function People({ users: initialUser }: Props) {
-  const { peopleList, setPeopleList } = usePeopleState((s) => ({
+  const { peopleList, setPeopleList } = usePeopleListState((s) => ({
     peopleList: s.peopleList,
     setPeopleList: s.setPeopleList,
   }));
@@ -25,8 +25,7 @@ function People({ users: initialUser }: Props) {
   }, []);
   return (
     <>
-      <PeopleSheet />
-      <Card>
+      <Card className="flex-1">
         <CardContent>
           <CardHeader>
             <div className="flex flex-wrap items-center">
@@ -45,8 +44,8 @@ function People({ users: initialUser }: Props) {
             columns={columns}
             data={peopleList}
             onRowClick={(data) => {
-              usePeopleState.setState({
-                overView: true,
+              useOverViewState.setState({
+                open: true,
                 people: data,
               });
             }}

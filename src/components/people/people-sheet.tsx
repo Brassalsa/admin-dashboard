@@ -1,3 +1,4 @@
+"use client";
 import {
   Sheet,
   SheetContent,
@@ -6,16 +7,17 @@ import {
 } from "@/components/ui/sheet";
 
 import PeopleOverView from "./people-overview";
-import usePeopleState from "@/state/people";
+import { useOverViewState } from "@/state/people";
 
 export default function PeopleSheet() {
-  const { people, overView, setOverView } = usePeopleState((s) => ({
+  const { people, open, setOpen } = useOverViewState((s) => ({
     people: s.people,
-    overView: s.overView,
-    setOverView: s.setOverView,
+    open: s.open,
+    setOpen: s.setOpen,
   }));
+
   return (
-    <Sheet open={overView} onOpenChange={setOverView} modal>
+    <Sheet open={open} onOpenChange={setOpen} modal>
       <SheetContent className="overflow-y-scroll">
         <SheetTitle className="hidden">People Overview</SheetTitle>
         <SheetDescription asChild className="text-primary">
