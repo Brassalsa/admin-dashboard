@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
-import { useUserCtx } from "./context/user-provider";
 import { Card, CardContent } from "./ui/card";
+import { useUserState } from "@/state/user";
 
 function Overview() {
-  const { user } = useUserCtx();
+  const { user } = useUserState();
 
   return (
     <div>

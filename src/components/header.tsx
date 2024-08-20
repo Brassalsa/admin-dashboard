@@ -6,20 +6,19 @@ import { ModeToggle } from "./theme-toogle";
 import UserUI, { UserUIImg, UserUiName, UserUIUserName } from "./user-ui";
 import { Button } from "./ui/button";
 import { Bell, MenuIcon } from "lucide-react";
-import { useUserCtx } from "./context/user-provider";
 import Menu, { MenuSideBarLink } from "./menu";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTrigger,
 } from "./ui/sheet";
 import { useState } from "react";
+import { useUserState } from "@/state/user";
 
 function Header() {
-  const { user } = useUserCtx();
+  const { user } = useUserState();
   const [openMenu, setOpenMenu] = useState(false);
   const trigger = () => setOpenMenu(!openMenu);
   return (
