@@ -59,7 +59,7 @@ export function UserUIImg({ className }: PropsWIthClassName) {
         alt={`${name}-img`}
         onError={() => setImgSrc("/svg/user.svg")}
         fill
-        sizes="200px"
+        sizes="100px"
       />
     </div>
   );
