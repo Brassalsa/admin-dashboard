@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
@@ -33,25 +35,26 @@ export default function AddMember() {
           <span>Add Members</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-y-auto">
-        <div className="max-h-svh h-min overflow-y-auto px-1">
-          <DialogHeader>Add Teams</DialogHeader>
-          <PeopleForm
-            defaultValues={{
-              email: "",
-              id: "",
-              name: "",
-              role: "",
-              status: "",
-              teams: [],
-            }}
-            onSubmit={(data) => {
-              onSubmit(data);
-              trigger();
-            }}
-            onCancel={trigger}
-          />
-        </div>
+      <DialogContent className="max-h-svh h-min overflow-y-auto px-6">
+        <DialogTitle>Add Teams</DialogTitle>
+        <DialogDescription className="sr-only">
+          add teams to people list
+        </DialogDescription>
+        <PeopleForm
+          defaultValues={{
+            email: "",
+            id: "",
+            name: "",
+            role: "",
+            status: "",
+            teams: [],
+          }}
+          onSubmit={(data) => {
+            onSubmit(data);
+            trigger();
+          }}
+          onCancel={trigger}
+        />
       </DialogContent>
     </Dialog>
   );
