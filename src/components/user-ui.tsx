@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { PropsDefault, PropsWIthClassName, User } from "@/types";
 import Image from "next/image";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type CtxProps = {
   image?: User["image"];
@@ -46,7 +46,13 @@ const DefaultUserUi = () => (
 
 export function UserUIImg({ className }: PropsWIthClassName) {
   const { image, name } = useUserCtx();
-  const [imgSrc, setImgSrc] = useState(image || "/svg/user.svg");
+  const initial = image || "/svg/user.svg";
+  const [imgSrc, setImgSrc] = useState(initial);
+
+  useEffect(() => {
+    setImgSrc(initial);
+  }, [initial]);
+
   return (
     <div
       className={cn(
