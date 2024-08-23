@@ -1,8 +1,8 @@
-import PeopleSheet from "@/components/people/people-sheet";
+import OverviewComp from "@/components/people/overview-comp";
 import React from "react";
 
 function OverViewPage() {
-  return <PeopleSheet />;
+  return <OverviewComp />;
 }
 
 export default OverViewPage;

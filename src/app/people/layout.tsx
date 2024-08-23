@@ -5,10 +5,10 @@ type Props = PropsWithChildren & {
 };
 function PeopleLayout({ children, overview }: Props) {
   return (
-    <>
+    <div className="flex gap-2 w-full overflow-x-hidden">
       {children}
       {overview}
-    </>
+    </div>
   );
 }
 

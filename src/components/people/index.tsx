@@ -25,7 +25,7 @@ function People({ users: initialUser }: Props) {
   }, []);
   return (
     <>
-      <Card className="flex-1">
+      <Card className="flex-1 overflow-x-hidden">
         <CardContent>
           <CardHeader>
             <div className="flex flex-wrap items-center">
