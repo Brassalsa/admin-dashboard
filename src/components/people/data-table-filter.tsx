@@ -1,30 +1,32 @@
-import { FilterIcon } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+"use client";
+import { ChevronDown, ChevronsDownUp, FilterIcon } from "lucide-react";
+import React, { Ref, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
+
+import { Roles, Teams } from "@/lib/constants/user";
+
+import MultiSelect, { MultiSelectRef } from "../ui/multi-select";
+import useUrlQuery from "@/hooks/url-query";
+import useTableState from "@/state/table";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Separator } from "../ui/separator";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
-import { Roles, Teams } from "@/lib/constants/user";
-
-import MultiSelect, { MultiSelectRef } from "../ui/multi-select";
-import useUrlQuery from "@/hooks/url-query";
-import useTableState from "@/state/table";
+import { Checkbox } from "../ui/checkbox";
+import { Filter } from "@/types";
 
 function DataTableFilter() {
   const [open, setOpen] = useState(false);
-  const rolesRef = useRef<MultiSelectRef>();
-  const teamsRef = useRef<MultiSelectRef>();
+  const [accordin, setAccordin] = useState("");
   const trigger = () => setOpen((prev) => !prev);
   const query = useUrlQuery(true);
   const { table, filter, setFilter } = useTableState((s) => ({
@@ -33,7 +35,15 @@ function DataTableFilter() {
     setFilter: s.setFilter,
   }));
 
-  const setFilters = (
+  const [localFilter, setLocalFilter] = useState<Filter>({
+    roles: filter.roles,
+    teams: filter.teams,
+  });
+  const setFilterLocal = (filter: Partial<Filter>) => {
+    setLocalFilter({ ...localFilter, ...filter });
+  };
+
+  const setGlobalFilters = (
     filters?: { roles: string[]; teams: string[] },
     setQueries = false
   ) => {
@@ -62,79 +72,108 @@ function DataTableFilter() {
     // run on initial render to set filters
     const roles = query.getQueryParam("roles").split(",");
     const teams = query.getQueryParam("teams").split(",");
-    setFilters({
+    setGlobalFilters({
       roles,
       teams,
     });
   }, []);
 
   const handleSubmit = () => {
-    const roles = (rolesRef.current?.selectedItems || []).filter(
+    const roles = localFilter.roles.filter(
       (i) => Roles[i as keyof typeof Roles]
     );
-    const teams = (teamsRef.current?.selectedItems || []).filter(
+    const teams = localFilter.teams.filter(
       (i) => Teams[i as keyof typeof Teams]
     );
-
     trigger();
-    setFilters({ roles, teams }, true);
-  };
-
-  const handleClear = () => {
-    trigger();
-    setFilters(useTableState.getInitialState().filter, true);
+    setGlobalFilters({ roles, teams }, true);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="scale-90">
           <FilterIcon className="stroke-slate-500 dark:stroke-slate-300 size-5" />
         </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogTitle>
-          <DialogHeader>Filter</DialogHeader>
-          <DialogDescription>Filter based on Role and Teams</DialogDescription>
-        </DialogTitle>
-        <Accordion type="multiple">
-          <AccordionItem value="role">
-            <AccordionTrigger>Role</AccordionTrigger>
-            <AccordionContent>
-              <MultiSelect
-                title="Filter by roles"
-                items={Object.keys(Roles)}
-                defaultVal={filter.roles}
-                ref={rolesRef}
-                itemText={(key) => Roles[key as keyof typeof Roles]}
-              />
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="teams">
-            <AccordionTrigger>Teams</AccordionTrigger>
-            <AccordionContent>
-              <MultiSelect
-                title="Filter by teams"
-                items={Object.keys(Teams)}
-                defaultVal={filter.teams}
-                ref={teamsRef}
-                itemText={(key) => Teams[key as keyof typeof Teams]}
-              />
-            </AccordionContent>
-          </AccordionItem>
-          <div className="flex gap-2 justify-end mt-3">
-            <Button variant={"outline"} onClick={handleClear}>
-              Clear
-            </Button>
-
-            <Button onClick={handleSubmit} type="submit">
-              Apply
-            </Button>
-          </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-60 px-2">
+        <DropdownMenuLabel className="flex justify-between items-center">
+          <span className="text-base">Filters</span>
+          <ChevronDown className="rotate-180 size-4 shrink-0 opacity-70 translate-x-2" />
+        </DropdownMenuLabel>
+        <Separator />
+        <Accordion
+          type="single"
+          collapsible
+          value={accordin}
+          onValueChange={(val) => setAccordin(val)}
+        >
+          <FilterItem
+            title="Roles"
+            object={Roles}
+            value={localFilter.roles}
+            isChecked={accordin === "Roles"}
+            onValueChange={(val) =>
+              setFilterLocal({
+                roles: val,
+              })
+            }
+          />
+          <FilterItem
+            title="Teams"
+            object={Teams}
+            value={localFilter.teams}
+            isChecked={accordin === "Teams"}
+            onValueChange={(val) =>
+              setFilterLocal({
+                teams: val,
+              })
+            }
+          />
+          <Button
+            className="w-full bg-primary-color text-white hover:opacity-85 hover:bg-primary-color"
+            onClick={handleSubmit}
+          >
+            Select
+          </Button>
         </Accordion>
-      </DialogContent>
-    </Dialog>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
 export default DataTableFilter;
+
+type Props = {
+  title: string;
+  value?: string[];
+  object: {
+    [x: string]: string;
+  };
+  isChecked?: boolean;
+  onValueChange: (val: string[]) => void;
+};
+const FilterItem = React.forwardRef(
+  (
+    { value, title, object, isChecked, onValueChange }: Props,
+    ref: Ref<MultiSelectRef | undefined>
+  ) => {
+    return (
+      <AccordionItem value={title}>
+        <AccordionTrigger className="gap-2 hover:no-underline">
+          <Checkbox checked={isChecked} className="size-4 rounded-[2px]" />
+          <span className="flex-1 text-start">{title}</span>
+        </AccordionTrigger>
+        <AccordionContent className="text-base font-light pl-6">
+          <MultiSelect
+            items={Object.keys(object)}
+            defaultVal={value}
+            ref={ref}
+            itemText={(key) => object[key]}
+            onValueChange={onValueChange}
+          />
+        </AccordionContent>
+      </AccordionItem>
+    );
+  }
+);

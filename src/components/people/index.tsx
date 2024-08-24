@@ -44,8 +44,9 @@ function People({ users: initialUser }: Props) {
             columns={columns}
             data={peopleList}
             onRowClick={(data) => {
+              const state = useOverViewState.getState();
               useOverViewState.setState({
-                open: true,
+                open: state.open ? state.people?.id != data.id : true,
                 people: data,
               });
             }}

@@ -1,5 +1,7 @@
+import { cn } from "@/lib/utils";
 import React, {
   ChangeEvent,
+  ComponentPropsWithoutRef,
   Dispatch,
   forwardRef,
   Ref,
@@ -7,13 +9,10 @@ import React, {
   useImperativeHandle,
   useState,
 } from "react";
-import { Button } from "./button";
-import { CheckCheck, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Checkbox } from "./checkbox";
 
-type Props = {
+type Props = ComponentPropsWithoutRef<"div"> & {
   items: string[];
-  title?: string;
   defaultVal?: string[];
   onValueChange?: (val: string[]) => void;
   itemText?: (val: string) => string;
@@ -25,14 +24,17 @@ export type MultiSelectRef = {
 };
 
 function MultiSelect(
-  { items, title, defaultVal = [], onValueChange, itemText }: Props,
+  { items, defaultVal = [], onValueChange, itemText, ...rest }: Props,
   ref?: Ref<MultiSelectRef | undefined | null>
 ) {
   const [selectedItems, setSelectedItems] = useState<string[]>(defaultVal);
+
   useImperativeHandle(ref, () => ({ selectedItems, setSelectedItems }));
+
   useEffect(() => {
     onValueChange?.(selectedItems);
   }, [selectedItems]);
+
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
     const newSelectedRoles = checked
@@ -43,52 +45,22 @@ function MultiSelect(
   };
 
   return (
-    <div className="-my-3">
-      <div className="flex gap-2 items-center text-muted-foreground">
-        <div>{title || "Filter values"}</div>
-        <div className="ml-auto flex gap-1">
-          <Button
-            size={"icon"}
-            variant={"outline"}
-            type="button"
-            onClick={() => setSelectedItems(items)}
-            className="scale-[0.6]"
-          >
-            <CheckCheck
-              className={cn({
-                "stroke-blue-500": items.length === selectedItems.length,
-              })}
+    <div {...rest} className={cn("gap-y-2", rest.className)}>
+      {items.map((key) => (
+        <div key={key} className="shrink-0">
+          <label className="flex gap-1 items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="accent-primary-color hidden"
+              value={key}
+              checked={selectedItems.includes(key)}
+              onChange={handleCheckboxChange}
             />
-            <span className="sr-only">select all values</span>
-          </Button>
-          <Button
-            size={"icon"}
-            variant={"outline"}
-            type="button"
-            onClick={() => setSelectedItems([])}
-            className=" scale-[0.6]"
-          >
-            <X />
-            <span className="sr-only">clear all values</span>
-          </Button>
+            <Checkbox value={key} checked={selectedItems.includes(key)} />
+            {itemText ? itemText(key) : key}
+          </label>
         </div>
-      </div>
-      <div className="grid sm:grid-cols-2 gap-y-2">
-        {items.map((key) => (
-          <div key={key} className="shrink-0">
-            <label className="flex gap-1 items-center cursor-pointer">
-              <input
-                type="checkbox"
-                className="accent-blue-500"
-                value={key}
-                checked={selectedItems.includes(key)}
-                onChange={handleCheckboxChange}
-              />
-              {itemText ? itemText(key) : key}
-            </label>
-          </div>
-        ))}
-      </div>
+      ))}
     </div>
   );
 }
