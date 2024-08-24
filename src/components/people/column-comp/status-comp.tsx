@@ -10,7 +10,10 @@ export const StatusHeader = ({ column }: PeopleHeaderComp) => {
   const desc = column.getIsSorted() === "desc";
 
   return (
-    <Button variant="ghost" onClick={() => column.toggleSorting(asc, true)}>
+    <button
+      className="flex items-center"
+      onClick={() => column.toggleSorting(asc, true)}
+    >
       Status
       {asc ? (
         <ArrowUp className="ml-2 h-4 w-4" />
@@ -19,7 +22,7 @@ export const StatusHeader = ({ column }: PeopleHeaderComp) => {
       ) : (
         <ArrowUpDown className="ml-2 h-4 w-4" />
       )}
-    </Button>
+    </button>
   );
 };
 

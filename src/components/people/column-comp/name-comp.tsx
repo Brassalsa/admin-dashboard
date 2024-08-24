@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { PeopleCellComp, PeopleHeaderComp } from "../columns";
 import UserUI, {
@@ -11,7 +10,10 @@ export const NameHeader = ({ column }: PeopleHeaderComp) => {
   const asc = column.getIsSorted() === "asc";
   const desc = column.getIsSorted() === "desc";
   return (
-    <Button variant="ghost" onClick={() => column.toggleSorting(asc, true)}>
+    <button
+      className="flex items-center"
+      onClick={() => column.toggleSorting(asc, true)}
+    >
       Name
       {asc ? (
         <ArrowUp className="ml-2 h-4 w-4" />
@@ -20,7 +22,7 @@ export const NameHeader = ({ column }: PeopleHeaderComp) => {
       ) : (
         <ArrowUpDown className="ml-2 h-4 w-4" />
       )}
-    </Button>
+    </button>
   );
 };
 

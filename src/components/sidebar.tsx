@@ -1,5 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
+import useHeaderState from "@/state/header";
 import { LayoutGrid } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,10 +8,22 @@ import React from "react";
 
 function SideBar() {
   const path = usePathname();
+  const visible = useHeaderState((s) => s.visible);
   return (
-    <div className="sticky top-0 left-0 w-64 p-4 hidden lg:block">
-      <SideBarItem href="/" title="overview" isActive={path == "/"} />
-      <SideBarItem href="/people" title="people" isActive={path == "/people"} />
+    <div className="w-64 p-4 hidden lg:block">
+      <div
+        className={cn(
+          "fixed top-4 transition-all duration-300",
+          visible ? "top-20" : ""
+        )}
+      >
+        <SideBarItem href="/" title="overview" isActive={path == "/"} />
+        <SideBarItem
+          href="/people"
+          title="people dictionary"
+          isActive={path == "/people"}
+        />
+      </div>
     </div>
   );
 }

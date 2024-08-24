@@ -28,7 +28,7 @@ function People({ users: initialUser }: Props) {
       <Card className="flex-1 overflow-x-hidden">
         <CardContent>
           <CardHeader>
-            <div className="flex flex-wrap items-center">
+            <div className="flex flex-wrap items-center gap-2">
               <div className="flex-1 flex gap-2 shrink-0 min-w-fit justify-center md:justify-start">
                 <h3 className="text-lg font-semibold">Team members</h3>{" "}
                 <Tag varient="violet">{peopleList?.length}</Tag>
