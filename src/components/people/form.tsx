@@ -26,7 +26,7 @@ import {
 } from "../ui/select";
 import { Roles, Status, Teams } from "@/lib/constants/user";
 import { Button } from "../ui/button";
-import { IterationCcw, RotateCcw, Trash2 } from "lucide-react";
+import { RotateCcw, Trash2 } from "lucide-react";
 import MultiSelect, { MultiSelectRef } from "../ui/multi-select";
 
 type Props = {
@@ -60,13 +60,13 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
     <div>
       <Form {...form}>
         <form
-          className="flex flex-col sm:grid gap-3 h-min"
+          className="space-y-2 sm:space-y-0 sm:grid gap-3 h-min"
           onSubmit={form.handleSubmit(onSubmitHandler)}
         >
           <FormField
             control={form.control}
             name="image"
-            render={({ field }) => (
+            render={() => (
               <FormItem className="col-span-2 flex flex-col">
                 <UserUI
                   email={form.getValues().email}
@@ -148,7 +148,7 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
                 <FormLabel>Role</FormLabel>
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="w-[200px] capitalize">
+                    <SelectTrigger className="capitalize">
                       <SelectValue placeholder="Role..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -175,7 +175,7 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
                 <FormLabel>Status</FormLabel>
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="w-[200px] capitalize">
+                    <SelectTrigger className="capitalize">
                       <SelectValue placeholder="Status..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -202,6 +202,7 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
                 <FormLabel>Teams</FormLabel>
                 <FormControl>
                   <MultiSelect
+                    className="w-fit"
                     title="Teams"
                     items={Object.keys(Teams)}
                     onValueChange={(val) => {

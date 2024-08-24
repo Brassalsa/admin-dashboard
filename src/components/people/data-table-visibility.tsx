@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -8,9 +8,14 @@ import {
 import { Button } from "../ui/button";
 import { Eye } from "lucide-react";
 import useTableState from "@/state/table";
+import { useOverViewState } from "@/state/people";
 
 function DataTableVisibility() {
   const table = useTableState((s) => s.table);
+  const open = useOverViewState((s) => s.open);
+  useEffect(() => {
+    table?.getColumn("select")?.toggleVisibility(open);
+  }, [open]);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

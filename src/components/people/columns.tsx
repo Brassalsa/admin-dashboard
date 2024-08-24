@@ -5,7 +5,7 @@ import { Roles, Teams } from "@/lib/constants/user";
 import ActionsComp from "./column-comp/action-comp";
 import { NameCell, NameHeader } from "./column-comp/name-comp";
 import { StatusHeader, StatusRow } from "./column-comp/status-comp";
-import { Checkbox } from "../ui/checkbox";
+import { SelectCell, SelectHeader } from "./column-comp/select-comp";
 
 type People = User;
 export type PeopleCellComp = {
@@ -18,26 +18,9 @@ export type PeopleHeaderComp = {
 export const columns: ColumnDef<People>[] = [
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        onClick={(e) => e.stopPropagation()}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
+    header: ({ table }) => <SelectHeader table={table} />,
+    cell: ({ row }) => <SelectCell row={row} />,
+    enableHiding: true,
   },
   {
     accessorKey: "name",
