@@ -1,6 +1,6 @@
 "use client";
-import { ChevronDown, ChevronsDownUp, FilterIcon } from "lucide-react";
-import React, { Ref, useEffect, useRef, useState } from "react";
+import { ChevronDown, FilterIcon } from "lucide-react";
+import React, { Ref, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 
 import { Roles, Teams } from "@/lib/constants/user";
@@ -73,6 +73,10 @@ function DataTableFilter() {
     const roles = query.getQueryParam("roles").split(",");
     const teams = query.getQueryParam("teams").split(",");
     setGlobalFilters({
+      roles,
+      teams,
+    });
+    setLocalFilter({
       roles,
       teams,
     });
