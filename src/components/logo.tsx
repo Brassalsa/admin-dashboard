@@ -6,7 +6,7 @@ function Logo(props: ComponentPropsWithoutRef<"span">) {
     <span
       {...props}
       className={cn(
-        "text-3xl text-violet-600 dark:text-violet-500 font-semibold",
+        "text-3xl text-primary-color font-semibold",
         props.className
       )}
     >

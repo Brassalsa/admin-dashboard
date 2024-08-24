@@ -8,12 +8,12 @@ function FancyLink(props: PropsDefault & { href: string }) {
     <Link
       {...props}
       className={cn(
-        "overflow-hidden text-xs group hover:opacity-100 transition-opacity text-violet-600 dark:text-violet-300",
+        "overflow-hidden text-xs group hover:opacity-100 transition-opacity text-primary-color",
         props.className
       )}
     >
       {props.children}
-      <div className="w-full border border-violet-400 translate-x-[-100%] group-hover:translate-x-0 transition " />
+      <div className="w-full border border-primary-color translate-x-[-100%] group-hover:translate-x-0 transition " />
     </Link>
   );
 }

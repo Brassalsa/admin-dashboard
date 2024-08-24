@@ -30,7 +30,7 @@ export default function AddMember() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-violet-500 text-violet-50 hover:bg-violet-400">
+        <Button>
           <Plus className="scale-90" />
           <span>Add Members</span>
         </Button>

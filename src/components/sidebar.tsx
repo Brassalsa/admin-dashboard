@@ -32,7 +32,7 @@ const SideBarItem = ({ title, isActive, href }: Props) => (
     <LayoutGrid
       className={cn(
         "stroke-slate-500 dark:stroke-slate-400",
-        isActive && "stroke-violet-500 dark:stroke-violet-500"
+        isActive && "stroke-primary-color dark:stroke-primary-color"
       )}
     />
     {title}
