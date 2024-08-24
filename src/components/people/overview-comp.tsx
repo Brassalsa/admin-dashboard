@@ -4,6 +4,7 @@ import React from "react";
 import PeopleOverView from "./people-overview";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
+import useHeaderState from "@/state/header";
 
 function OverviewComp() {
   const { people, open, setOpen } = useOverViewState((s) => ({
@@ -11,7 +12,7 @@ function OverviewComp() {
     open: s.open,
     setOpen: s.setOpen,
   }));
-
+  const visible = useHeaderState((s) => s.visible);
   return (
     <div
       className={cn(
@@ -20,7 +21,12 @@ function OverviewComp() {
       )}
     >
       {people && (
-        <div className="relative">
+        <div
+          className={cn(
+            "relative transition-transform duration-300",
+            visible ? "translate-y-0" : "-translate-y-14"
+          )}
+        >
           <PeopleOverView
             people={people}
             className="min-h-[calc(100svh-100px)]"

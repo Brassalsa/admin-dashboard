@@ -7,11 +7,16 @@ import {
   useMotionValueEvent,
   AnimatePresence,
 } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-function FloatingContainer(props: PropsDefault) {
+type Props = PropsDefault & {
+  value?: boolean;
+  onValueChange?: (val: boolean) => void;
+};
+function FloatingContainer({ value = true, onValueChange, ...rest }: Props) {
   const { scrollYProgress } = useScroll();
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(value);
+
   useMotionValueEvent(scrollYProgress, "change", (curr) => {
     if (typeof curr === "number") {
       let dir = curr - scrollYProgress.getPrevious()!;
@@ -23,11 +28,16 @@ function FloatingContainer(props: PropsDefault) {
       }
     }
   });
+
+  useEffect(() => {
+    onValueChange?.(visible);
+  }, [visible]);
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        {...props}
-        className={cn("sticky top-0", props.className)}
+        {...rest}
+        className={cn("sticky top-0", rest.className)}
         initial={{
           y: "-100%",
           opacity: 1,

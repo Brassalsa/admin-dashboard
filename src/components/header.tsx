@@ -16,13 +16,20 @@ import {
 } from "./ui/sheet";
 import { useState } from "react";
 import { useUserState } from "@/state/user";
+import useHeaderState from "@/state/header";
 
 function Header() {
   const { user } = useUserState();
   const [openMenu, setOpenMenu] = useState(false);
+  const setVisible = useHeaderState((s) => s.setVisible);
   const trigger = () => setOpenMenu(!openMenu);
   return (
-    <FloatingContainer className="min-h-14 border-b-2 bg-background/90 z-50 mb-4 flex justify-center items-center">
+    <FloatingContainer
+      className="min-h-14 border-b-2 bg-background/90 z-50 mb-4 flex justify-center items-center"
+      onValueChange={(val) => {
+        setVisible(val);
+      }}
+    >
       <NavBar className="h-full w-full">
         <Logo className="flex-1" />
         <ModeToggle className="scale-75 rounded-full" />
