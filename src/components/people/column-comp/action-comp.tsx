@@ -1,15 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { usePeopleListState, usePeopleState } from "@/state/people";
-import { MoreHorizontal } from "lucide-react";
+import { type LucideIcon, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import DeleteRow from "../actions/delete-row-dialog";
 import EditRow from "../actions/edit-row-dialog";
@@ -21,34 +15,23 @@ const ActionsComp = ({ row }: { row: Row<User> }) => {
   const [delDialog, setDelDialog] = useState(false);
   return (
     <span className="relative" onClick={(e) => e.stopPropagation()}>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() => {
-              usePeopleState.setState({
-                people: row.original,
-              });
-              setEditDialog(true);
-            }}
-          >
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              setDelDialog(true);
-            }}
-          >
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div className="flex gap-2">
+        <ActionBtn
+          onClick={() => {
+            setDelDialog(true);
+          }}
+          Icon={Trash2}
+        />
+        <ActionBtn
+          onClick={() => {
+            usePeopleState.setState({
+              people: row.original,
+            });
+            setEditDialog(true);
+          }}
+          Icon={Pencil}
+        />
+      </div>
       <DeleteRow
         open={delDialog}
         setOpen={setDelDialog}
@@ -72,3 +55,13 @@ const ActionsComp = ({ row }: { row: Row<User> }) => {
 };
 
 export default ActionsComp;
+
+type BtnProps = {
+  onClick?: () => void;
+  Icon: LucideIcon;
+};
+const ActionBtn = ({ onClick, Icon }: BtnProps) => (
+  <Button onClick={onClick} size={"icon"} variant={"ghost"}>
+    <Icon className="stroke-slate-600 dark:stroke-slate-400 size-5" />
+  </Button>
+);

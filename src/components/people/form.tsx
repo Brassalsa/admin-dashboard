@@ -26,7 +26,7 @@ import {
 } from "../ui/select";
 import { Roles, Status, Teams } from "@/lib/constants/user";
 import { Button } from "../ui/button";
-import { IterationCcw, Trash2 } from "lucide-react";
+import { IterationCcw, RotateCcw, Trash2 } from "lucide-react";
 import MultiSelect, { MultiSelectRef } from "../ui/multi-select";
 
 type Props = {
@@ -75,19 +75,19 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
                   image={form.getValues().image}
                   className="mx-auto"
                 >
-                  <UserUIImg className="size-16" />
+                  <UserUIImg className="size-24" />
                 </UserUI>
-                <div className="flex gap-4 mx-auto">
+                <div className="flex gap-4 mx-auto *:uppercase">
                   <FormControl>
                     <>
                       <Button
                         type="button"
-                        className="p-0"
+                        className="p-2 flex gap-1"
                         variant={"secondary"}
                       >
                         <label className="flex gap-1 items-center p-1 cursor-pointer">
-                          <IterationCcw className="scale-[0.8]" />
-                          Change
+                          <RotateCcw className="scale-[0.8] " />
+                          Change Photo
                           <input
                             id="file"
                             name="file"
@@ -100,14 +100,14 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
                   </FormControl>
                   <Button
                     type="button"
-                    className="p-1 flex gap-1"
+                    className="p-2 flex gap-1"
                     variant={"secondary"}
                     onClick={() => {
                       form.setValue("image", "");
                     }}
                   >
                     <Trash2 className="scale-[0.8]" />
-                    Remove
+                    Remove Photo
                   </Button>
                 </div>
                 <FormMessage />
@@ -214,7 +214,7 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
               </FormItem>
             )}
           />
-          <div className="col-span-2 mt-3 flex ml-auto gap-2 flex-col sm:flex-row w-full sm:w-auto">
+          <div className="col-span-2 mt-3 flex ml-auto gap-2 flex-col sm:flex-row w-full sm:w-auto *:uppercase">
             <Button
               type="button"
               variant={"secondary"}
