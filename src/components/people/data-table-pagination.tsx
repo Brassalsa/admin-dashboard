@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import useUrlQuery from "@/hooks/url-query";
-import { ComponentPropsWithoutRef, useEffect } from "react";
+import { ComponentPropsWithoutRef, useCallback, useEffect } from "react";
 import useTableState from "@/state/table";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -69,8 +69,30 @@ type Props = ComponentPropsWithoutRef<"div"> & {
   length: number;
   currentInd: number;
 };
+
 function PageNums({ length, onValueChange, currentInd, ...rest }: Props) {
-  const arr = new Array(length).fill(1);
+  const getPaginationRange = () => {
+    const range = [];
+    const start = Math.max(2, currentInd - 1);
+    const end = Math.min(length - 1, currentInd + 3);
+
+    if (start > 2) {
+      range.push("...");
+    }
+
+    for (let i = start; i <= end; i++) {
+      range.push(i);
+    }
+
+    if (end < length - 1) {
+      range.push("...");
+    }
+
+    return [1, ...range, length];
+  };
+
+  const paginationRange = getPaginationRange();
+
   return (
     <div
       {...rest}
@@ -79,20 +101,24 @@ function PageNums({ length, onValueChange, currentInd, ...rest }: Props) {
         rest.className
       )}
     >
-      {arr.map((_, ind) => (
+      {paginationRange.map((page, index) => (
         <Button
-          key={ind}
+          key={index}
           className="disabled:bg-muted disabled:opacity-100"
           variant={"ghost"}
           size={"sm"}
           onClick={() => {
-            onValueChange(ind);
+            if (typeof page === "number") {
+              onValueChange(page - 1);
+            }
           }}
-          disabled={ind === currentInd}
+          disabled={page === currentInd + 1}
         >
-          {ind + 1}
+          {page}
         </Button>
       ))}
     </div>
   );
 }
+
+export default PageNums;
