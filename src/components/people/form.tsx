@@ -212,15 +212,6 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
                     }}
                     ref={teamsRef}
                   />
-                  {/* <MultiSelect
-                    className="w-fit"
-                    title="Teams"
-                    items={Object.keys(Teams)}
-                    onValueChange={(val) => {
-                      form.setValue("teams", val);
-                    }}
-                    ref={teamsRef}
-                  /> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -235,7 +226,9 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
             >
               Cancel
             </Button>
-            <Button>Save</Button>
+            <Button variant="secondary" disabled={!form.formState.isValid}>
+              Save
+            </Button>
           </div>
         </form>
       </Form>
