@@ -27,7 +27,10 @@ import {
 import { Roles, Status, Teams } from "@/lib/constants/user";
 import { Button } from "../ui/button";
 import { RotateCcw, Trash2 } from "lucide-react";
-import MultiSelect, { MultiSelectRef } from "../ui/multi-select";
+import MultiSelect, {
+  MultiSelectDropdown,
+  MultiSelectRef,
+} from "../ui/multi-select";
 
 type Props = {
   defaultValues: User;
@@ -201,8 +204,7 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
               <FormItem className="col-span-2">
                 <FormLabel>Teams</FormLabel>
                 <FormControl>
-                  <MultiSelect
-                    className="w-fit"
+                  <MultiSelectDropdown
                     title="Teams"
                     items={Object.keys(Teams)}
                     onValueChange={(val) => {
@@ -210,6 +212,15 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
                     }}
                     ref={teamsRef}
                   />
+                  {/* <MultiSelect
+                    className="w-fit"
+                    title="Teams"
+                    items={Object.keys(Teams)}
+                    onValueChange={(val) => {
+                      form.setValue("teams", val);
+                    }}
+                    ref={teamsRef}
+                  /> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>
