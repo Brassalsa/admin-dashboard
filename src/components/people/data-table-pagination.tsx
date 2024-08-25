@@ -87,7 +87,9 @@ function PageNums({ length, onValueChange, currentInd, ...rest }: Props) {
     if (end < length - 1) {
       range.push("...");
     }
-
+    if (length === 1) {
+      return [1];
+    }
     return [1, ...range, length];
   };
 
