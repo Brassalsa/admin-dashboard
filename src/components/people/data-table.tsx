@@ -25,18 +25,20 @@ import { DataTablePagination } from "./data-table-pagination";
 import { useEffect, useState } from "react";
 import DataTableVisibility from "./data-table-visibility";
 import useTableState from "@/state/table";
+import DataTableHeader from "./data-table-header";
+import { User } from "@/types";
 
-export interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  onRowClick: (rawData: TData) => void;
+export interface DataTableProps<TValue> {
+  columns: ColumnDef<User, TValue>[];
+  data: User[];
+  onRowClick: (rawData: User) => void;
 }
 
-const DataTable = <TData, TValue>({
+function DataTable<TValue>({
   columns,
   data,
   onRowClick,
-}: DataTableProps<TData, TValue>) => {
+}: DataTableProps<TValue>) {
   // sorting state
   const [sorting, setSorting] = useState<SortingState>([]);
   // search state
@@ -79,12 +81,10 @@ const DataTable = <TData, TValue>({
 
   return (
     <>
-      <div className="flex gap-1 justify-end mb-1">
-        <DataTableVisibility />
-      </div>
       {/* Table */}
       <div className="rounded-md border">
-        <Table>
+        <DataTableHeader />
+        <Table className="border-t border-b">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -136,12 +136,13 @@ const DataTable = <TData, TValue>({
             )}
           </TableBody>
         </Table>
+        {/*Pagination */}
+        <div className="px-2 py-3">
+          <DataTablePagination />
+        </div>
       </div>
-
-      {/*Pagination */}
-      <DataTablePagination />
     </>
   );
-};
+}
 
 export default DataTable;
