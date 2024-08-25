@@ -81,96 +81,96 @@ function MultiSelect(
 
 export default forwardRef(MultiSelect);
 
-export const MultiSelectDropdown = forwardRef(
-  (
-    { items, title, itemText, onValueChange }: Props,
-    ref: Ref<MultiSelectRef | undefined | null>
-  ) => {
-    const [open, setOpen] = useState(false);
-    const [localValues, setlocalValues] = useState(items);
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
-    // expose selected values
-    useImperativeHandle(ref, () => ({ selectedItems, setSelectedItems }));
+export const MultiSelectDropdown = forwardRef(function MultiSelectDropdown(
+  { items, title, itemText, onValueChange }: Props,
+  ref: Ref<MultiSelectRef | undefined | null>
+) {
+  const [open, setOpen] = useState(false);
+  const [localValues, setlocalValues] = useState(items);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  // expose selected values
+  useImperativeHandle(ref, () => ({ selectedItems, setSelectedItems }));
 
-    useEffect(() => {
-      onValueChange?.(selectedItems);
-    }, [selectedItems]);
+  useEffect(() => {
+    onValueChange?.(selectedItems);
+  }, [selectedItems]);
 
-    const addSelected = (val: string) => {
-      setSelectedItems([...selectedItems, val]);
-      setlocalValues([...localValues.filter((i) => i != val)]);
-    };
+  const addSelected = (val: string) => {
+    setSelectedItems([...selectedItems, val]);
+    setlocalValues([...localValues.filter((i) => i != val)]);
+  };
 
-    const removeSelected = (val: string) => {
-      setSelectedItems([...selectedItems.filter((i) => i != val)]);
-      setlocalValues([...localValues, val]);
-    };
+  const removeSelected = (val: string) => {
+    setSelectedItems([...selectedItems.filter((i) => i != val)]);
+    setlocalValues([...localValues, val]);
+  };
 
-    return (
-      <div className="relative isolate">
-        <Select onValueChange={addSelected} open={open} onOpenChange={setOpen}>
+  return (
+    <div className="relative isolate">
+      <Select onValueChange={addSelected} open={open} onOpenChange={setOpen}>
+        <div
+          className="flex gap-2 bg-background min-h-8 border w-full rounded z-10 items-center pl-2 cursor-pointer"
+          onClick={() => setOpen(true)}
+        >
           <div
-            className="flex gap-2 bg-background min-h-8 border w-full rounded z-10 items-center pl-2 cursor-pointer"
-            onClick={() => setOpen(true)}
+            className="flex gap-2 flex-wrap"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className="flex gap-2 flex-wrap"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {selectedItems.map((i) => (
-                <Tag className="flex gap-1 items-center h-fit rounded-sm">
-                  <span className="text-primary-color">
-                    {itemText ? itemText(i) : i}
-                  </span>
-                  <Button
-                    variant={"ghost"}
-                    size={"icon"}
-                    className="p-0 size-4 "
-                    type="button"
-                    onClick={() => {
-                      removeSelected(i);
-                    }}
-                  >
-                    <X />
-                  </Button>
-                </Tag>
-              ))}
-            </div>
-            <div className="ml-auto flex" onClick={(e) => e.stopPropagation()}>
-              <Button
-                variant={"ghost"}
-                size={"icon"}
-                className="p-0 "
-                type="button"
-                onClick={() => {
-                  setSelectedItems([]);
-                  setlocalValues(items);
-                }}
-              >
-                <X className="opacity-50" />
-              </Button>
-              <Button
-                variant={"ghost"}
-                size={"icon"}
-                className="p-0"
-                type="button"
-                onClick={() => setOpen(true)}
-              >
-                <ChevronDown className="opacity-50" />
-              </Button>
-            </div>
+            {selectedItems.map((i) => (
+              <Tag className="flex gap-1 items-center h-fit rounded-sm" key={i}>
+                <span className="text-primary-color">
+                  {itemText ? itemText(i) : i}
+                </span>
+                <Button
+                  variant={"ghost"}
+                  size={"icon"}
+                  className="p-0 size-4 "
+                  type="button"
+                  onClick={() => {
+                    removeSelected(i);
+                  }}
+                >
+                  <X />
+                </Button>
+              </Tag>
+            ))}
           </div>
-          <SelectTrigger className="pointer-events-none -mt-10 opacity-0" />
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>{title}</SelectLabel>
-              {localValues.map((i) => (
-                <SelectItem value={i}>{itemText ? itemText(i) : i}</SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
-    );
-  }
-);
+          <div className="ml-auto flex" onClick={(e) => e.stopPropagation()}>
+            <Button
+              variant={"ghost"}
+              size={"icon"}
+              className="p-0 "
+              type="button"
+              onClick={() => {
+                setSelectedItems([]);
+                setlocalValues(items);
+              }}
+            >
+              <X className="opacity-50" />
+            </Button>
+            <Button
+              variant={"ghost"}
+              size={"icon"}
+              className="p-0"
+              type="button"
+              onClick={() => setOpen(true)}
+            >
+              <ChevronDown className="opacity-50" />
+            </Button>
+          </div>
+        </div>
+        <SelectTrigger className="pointer-events-none -mt-10 opacity-0" />
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>{title}</SelectLabel>
+            {localValues.map((i) => (
+              <SelectItem value={i} key={i}>
+                {itemText ? itemText(i) : i}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+});

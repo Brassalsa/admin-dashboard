@@ -81,6 +81,7 @@ function PageNums({ length, onValueChange, currentInd, ...rest }: Props) {
     >
       {arr.map((_, ind) => (
         <Button
+          key={ind}
           className="disabled:bg-muted disabled:opacity-100"
           variant={"ghost"}
           size={"sm"}

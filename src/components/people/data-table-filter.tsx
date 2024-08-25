@@ -157,27 +157,25 @@ type Props = {
   isChecked?: boolean;
   onValueChange: (val: string[]) => void;
 };
-const FilterItem = React.forwardRef(
-  (
-    { value, title, object, isChecked, onValueChange }: Props,
-    ref: Ref<MultiSelectRef | undefined>
-  ) => {
-    return (
-      <AccordionItem value={title}>
-        <AccordionTrigger className="gap-2 hover:no-underline">
-          <Checkbox checked={isChecked} className="size-4 rounded-[2px]" />
-          <span className="flex-1 text-start">{title}</span>
-        </AccordionTrigger>
-        <AccordionContent className="text-base font-light pl-6">
-          <MultiSelect
-            items={Object.keys(object)}
-            defaultVal={value}
-            ref={ref}
-            itemText={(key) => object[key]}
-            onValueChange={onValueChange}
-          />
-        </AccordionContent>
-      </AccordionItem>
-    );
-  }
-);
+const FilterItem = React.forwardRef(function FilterItem(
+  { value, title, object, isChecked, onValueChange }: Props,
+  ref: Ref<MultiSelectRef | undefined>
+) {
+  return (
+    <AccordionItem value={title}>
+      <AccordionTrigger className="gap-2 hover:no-underline">
+        <Checkbox checked={isChecked} className="size-4 rounded-[2px]" />
+        <span className="flex-1 text-start">{title}</span>
+      </AccordionTrigger>
+      <AccordionContent className="text-base font-light pl-6">
+        <MultiSelect
+          items={Object.keys(object)}
+          defaultVal={value}
+          ref={ref}
+          itemText={(key) => object[key]}
+          onValueChange={onValueChange}
+        />
+      </AccordionContent>
+    </AccordionItem>
+  );
+});
