@@ -82,36 +82,47 @@ function MultiSelect(
 export default forwardRef(MultiSelect);
 
 export const MultiSelectDropdown = forwardRef(function MultiSelectDropdown(
-  { items, title, itemText, onValueChange }: Props,
+  { items, title, itemText, onValueChange, defaultVal = [] }: Props,
   ref: Ref<MultiSelectRef | undefined | null>
 ) {
   const [open, setOpen] = useState(false);
-  const [localValues, setlocalValues] = useState(items);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [dropdownItems, setDropDownItems] = useState(() =>
+    items.filter((item) => !defaultVal.includes(item))
+  );
+  const [selectedItems, setSelectedItems] = useState<string[]>(defaultVal);
   // expose selected values
   useImperativeHandle(ref, () => ({ selectedItems, setSelectedItems }));
 
   useEffect(() => {
+    if (selectedItems === defaultVal) return;
     onValueChange?.(selectedItems);
   }, [selectedItems]);
 
   const addSelected = (val: string) => {
     setSelectedItems([...selectedItems, val]);
-    setlocalValues([...localValues.filter((i) => i != val)]);
+    setDropDownItems([...dropdownItems.filter((item) => item != val)]);
   };
 
   const removeSelected = (val: string) => {
     setSelectedItems([...selectedItems.filter((i) => i != val)]);
-    setlocalValues([...localValues, val]);
+    setDropDownItems([...dropdownItems, val].sort());
   };
 
   return (
     <div className="relative isolate">
-      <Select onValueChange={addSelected} open={open} onOpenChange={setOpen}>
+      <Select
+        onValueChange={addSelected}
+        value=""
+        open={open}
+        onOpenChange={setOpen}
+      >
         <div
           className="flex gap-2 bg-background min-h-8 border w-full rounded z-10 items-center pl-2 cursor-pointer"
           onClick={() => setOpen(true)}
         >
+          {selectedItems.length == 0 && (
+            <span className="text-primary/50 text-sm">Select {title}</span>
+          )}
           <div
             className="flex gap-2 flex-wrap"
             onClick={(e) => e.stopPropagation()}
@@ -143,7 +154,7 @@ export const MultiSelectDropdown = forwardRef(function MultiSelectDropdown(
               type="button"
               onClick={() => {
                 setSelectedItems([]);
-                setlocalValues(items);
+                setDropDownItems(items);
               }}
             >
               <X className="opacity-50" />
@@ -163,7 +174,7 @@ export const MultiSelectDropdown = forwardRef(function MultiSelectDropdown(
         <SelectContent>
           <SelectGroup>
             <SelectLabel>{title}</SelectLabel>
-            {localValues.map((i) => (
+            {dropdownItems.map((i) => (
               <SelectItem value={i} key={i}>
                 {itemText ? itemText(i) : i}
               </SelectItem>

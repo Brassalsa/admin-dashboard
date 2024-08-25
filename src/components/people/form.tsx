@@ -27,10 +27,7 @@ import {
 import { Roles, Status, Teams } from "@/lib/constants/user";
 import { Button } from "../ui/button";
 import { RotateCcw, Trash2 } from "lucide-react";
-import MultiSelect, {
-  MultiSelectDropdown,
-  MultiSelectRef,
-} from "../ui/multi-select";
+import { MultiSelectDropdown, MultiSelectRef } from "../ui/multi-select";
 
 type Props = {
   defaultValues: User;
@@ -44,10 +41,6 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
     mode: "onChange",
     defaultValues,
   });
-
-  useEffect(() => {
-    teamsRef.current?.setSelectedItems(defaultValues.teams || []);
-  }, []);
 
   const onSubmitHandler = async (v: z.infer<typeof personSchema>) => {
     onSubmit?.({
@@ -205,11 +198,10 @@ function PeopleForm({ defaultValues, onSubmit, onCancel }: Props) {
                 <FormLabel>Teams</FormLabel>
                 <FormControl>
                   <MultiSelectDropdown
+                    defaultVal={field.value}
                     title="Teams"
                     items={Object.keys(Teams)}
-                    onValueChange={(val) => {
-                      form.setValue("teams", val);
-                    }}
+                    onValueChange={field.onChange}
                     ref={teamsRef}
                   />
                 </FormControl>
