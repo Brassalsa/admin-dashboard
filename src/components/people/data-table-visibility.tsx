@@ -15,7 +15,7 @@ function DataTableVisibility() {
   const open = useOverViewState((s) => s.open);
   useEffect(() => {
     table?.getColumn("select")?.toggleVisibility(open);
-  }, [open]);
+  }, [open, table]);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

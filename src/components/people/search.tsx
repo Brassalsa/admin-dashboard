@@ -1,36 +1,55 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import useUrlQuery from "@/hooks/url-query";
 import useTableState from "@/state/table";
-import { SearchIcon } from "lucide-react";
+import { Loader, LucideIcon, SearchIcon } from "lucide-react";
+import useDebounce from "@/hooks/debounce";
+import { PropsWIthClassName } from "@/types";
+import { cn } from "@/lib/utils";
 
 function Search() {
-  const { input, setInput } = useTableState((s) => ({
-    input: s.searchVal,
-    setInput: s.setSearchVal,
-  }));
-  const { query, setQueryParam } = useUrlQuery(true, 1000);
+  const [loading, setLoading] = useState(false);
+  const [localSearch, setLocalSearch] = useState("");
+  const setSearch = useTableState((s) => s.setSearchVal);
+  const { query, setQueryParam } = useUrlQuery();
+  const debounce = useDebounce(500);
 
   // run on first render
   useEffect(() => {
-    setInput(query.get("search") || "");
+    const val = query.get("search") || "";
+    setSearch(val);
+    setLocalSearch(val);
   }, []);
 
   return (
     <div className="flex items-center relative border py-0 pr-2 rounded focus-within:border-primary-color">
       <Input
         placeholder="Search..."
-        value={input}
+        value={localSearch}
         onChange={(e) => {
-          setInput(e.target.value);
-          setQueryParam("search", e.target.value);
+          const val = e.target.value;
+          setLocalSearch(val);
+          setLoading(true);
+          debounce(() => {
+            setQueryParam("search", val);
+            setSearch(val);
+            setLoading(false);
+          });
         }}
         className="max-w-sm border-0"
       />
-      <SearchIcon className="stroke-primary-color size-4" />
+      {loading ? (
+        <Icon Icon={Loader} className="animate-spin" />
+      ) : (
+        <Icon Icon={SearchIcon} />
+      )}
     </div>
   );
 }
 
 export default Search;
+
+function Icon({ Icon, className }: PropsWIthClassName & { Icon: LucideIcon }) {
+  return <Icon className={cn("stroke-primary-color size-4", className)} />;
+}
