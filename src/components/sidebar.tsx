@@ -38,16 +38,23 @@ const SideBarItem = ({ title, isActive, href }: Props) => (
   <Link
     href={href}
     className={cn(
-      "flex gap-1 hover:bg-muted p-2 rounded-md capitalize transition",
+      "flex gap-1 hover:bg-muted p-2 rounded-md capitalize transition ",
       isActive && "text-violet-500"
     )}
   >
-    <LayoutGrid
+    <div
       className={cn(
-        "stroke-slate-500 dark:stroke-slate-400",
-        isActive && "stroke-primary-color dark:stroke-primary-color"
+        "size-6 bg-primary rounded-md flex justify-center items-center",
+        isActive && "bg-primary-color "
       )}
-    />
+    >
+      <LayoutGrid
+        className={cn(
+          "fill-background bg-primary rounded-sm stroke-background size-4",
+          isActive && "bg-primary-color "
+        )}
+      />
+    </div>
     {title}
   </Link>
 );
