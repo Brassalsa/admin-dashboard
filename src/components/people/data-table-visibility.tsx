@@ -18,11 +18,11 @@ function DataTableVisibility() {
   }, [open, table]);
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      {/* <DropdownMenuTrigger asChild>
         <Button variant="outline" className="ml-auto" size={"icon"}>
           <Eye className="size-6 stroke-slate-500 dark:stroke-slate-300" />
         </Button>
-      </DropdownMenuTrigger>
+      </DropdownMenuTrigger> */}
       <DropdownMenuContent align="end">
         {table &&
           table

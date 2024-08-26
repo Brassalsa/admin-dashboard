@@ -56,7 +56,7 @@ export function UserUIImg({ className }: PropsWIthClassName) {
   return (
     <div
       className={cn(
-        "relative size-8 border rounded-full overflow-hidden shadow-sm",
+        "relative size-8 border rounded-full overflow-hidden shadow-sm bg-white",
         className
       )}
     >
