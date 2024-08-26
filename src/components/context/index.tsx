@@ -4,12 +4,7 @@ import { ThemeProvider } from "./theme-provider";
 
 function ContextProvider({ children }: PropsWithChildren) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
       {children}
     </ThemeProvider>
   );
