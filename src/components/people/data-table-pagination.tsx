@@ -90,6 +90,9 @@ function PageNums({ length, onValueChange, currentInd, ...rest }: Props) {
     if (length === 1) {
       return [1];
     }
+    if (length === 0) {
+      return [];
+    }
     return [1, ...range, length];
   };
 
